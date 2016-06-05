@@ -16,6 +16,11 @@ public class LessonController {
 	@Autowired
 	private Service service;
 
+	@RequestMapping(path = "")
+	public String state() {
+		return "RUNNING";
+	}
+
 	@RequestMapping(path = "/lessons", method = RequestMethod.GET)
 	public String getLessons(@RequestParam(value = "id", required = true) String id) {
 		log.info("GET lesson: " + id);
