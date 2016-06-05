@@ -2,6 +2,7 @@ package com.slawek.wordlearning.server.db.repositories;
 
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -29,11 +30,19 @@ public class LessonRawDataRepository {
 	private int port;
 	@Value(value = "${spring.data.mongodb.database}")
 	private String database;
+	@Value(value = "${spring.data.mongodb.username}")
+	private String username;
+	@Value(value = "${spring.data.mongodb.password}")
+	private String password;
+
+	@Value(value = "${db}")
+	private String dbs;
 
 	@PostConstruct void init() {
-		ServerAddress serverAddress = new ServerAddress(host, port);
-		MongoClient mongoClient = new MongoClient(serverAddress);
-		db = mongoClient.getDatabase(database);
+		ServerAddress serverAddress = new ServerAddress();
+		MongoClientURI uri = new MongoClientURI("mongodb://heroku_nvwngddl:XXxxxx33$@ds023373.mlab.com:23373/heroku_nvwngddl");
+		MongoClient mongoClient = new MongoClient(uri);
+		db = mongoClient.getDatabase("heroku_nvwngddl");
 	}
 
 	public List<String> getAllLessonIds() {
