@@ -37,8 +37,9 @@ public class LessonRawDataRepository {
 	@Value(value = "${db}")
 	private String dbs;
 
-	@PostConstruct void init() {
-		MongoClientURI uri = new MongoClientURI(System.getenv("MONGOHQ_URL"));
+	@PostConstruct
+	public void init() {
+		MongoClientURI uri = new MongoClientURI(System.getenv("MONGODB_URI"));
 		MongoCredential credential = MongoCredential.createCredential(uri.getUsername(), uri.getDatabase(), uri.getPassword());
 		MongoClient mongoClient = new MongoClient(new ServerAddress(), singletonList(credential));
 		db = mongoClient.getDatabase(uri.getDatabase());
