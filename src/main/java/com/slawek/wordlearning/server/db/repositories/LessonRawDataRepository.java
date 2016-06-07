@@ -1,6 +1,8 @@
 package com.slawek.wordlearning.server.db.repositories;
 
-import com.mongodb.*;
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -21,26 +23,13 @@ public class LessonRawDataRepository {
 
 	private MongoDatabase db;
 
-	@Value(value = "${spring.data.mongodb.host}")
-	private String host;
-	@Value(value = "${spring.data.mongodb.port}")
-	private int port;
-	@Value(value = "${spring.data.mongodb.database}")
-	private String database;
-	@Value(value = "${spring.data.mongodb.username}")
-	private String username;
-	@Value(value = "${spring.data.mongodb.password}")
-	private String password;
-
-	@Value(value = "${db}")
-	private String dbs;
+	@Value(value = "${spring.data.mongodb.uri}")
+	private String mongoURI;
 
 	@PostConstruct
 	public void init() {
-		MongoClientURI uri = new MongoClientURI(System.getenv("MONGODB_URI"));
-		MongoCredential credential = MongoCredential.createCredential(uri.getUsername(), uri.getDatabase(), uri.getPassword());
-		MongoClientOptions options = MongoClientOptions.builder().connectTimeout(20).build();
-		MongoClient mongoClient = new MongoClient(uri/*new ServerAddress(uri.Po), singletonList(credential), options*/);
+		MongoClientURI uri = new MongoClientURI(mongoURI);
+		MongoClient mongoClient = new MongoClient(uri);
 		db = mongoClient.getDatabase(uri.getDatabase());
 	}
 

@@ -5,7 +5,7 @@
 
 	<groupId>com.slawek.wordlearning.server</groupId>
 	<artifactId>wordlearning-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<name>wordlearning-server</name>
