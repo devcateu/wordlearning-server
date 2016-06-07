@@ -40,7 +40,7 @@ public class LessonRawDataRepository {
 
 	@PostConstruct void init() {
 		ServerAddress serverAddress = new ServerAddress();
-		MongoClientURI uri = new MongoClientURI("mongodb://heroku_nvwngddl:XXxxxx33$@ds023373.mlab.com:23373/heroku_nvwngddl");
+		MongoClientURI uri = new MongoClientURI("mongodb://heroku_nvwngddl:XXxxxx33$@ds023373.mlab.com:23373");
 		MongoClient mongoClient = new MongoClient(uri);
 		db = mongoClient.getDatabase("heroku_nvwngddl");
 	}
