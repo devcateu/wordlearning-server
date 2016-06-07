@@ -16,8 +16,6 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.singletonList;
-
 @Component
 public class LessonRawDataRepository {
 
@@ -42,7 +40,7 @@ public class LessonRawDataRepository {
 		MongoClientURI uri = new MongoClientURI(System.getenv("MONGODB_URI"));
 		MongoCredential credential = MongoCredential.createCredential(uri.getUsername(), uri.getDatabase(), uri.getPassword());
 		MongoClientOptions options = MongoClientOptions.builder().connectTimeout(20).build();
-		MongoClient mongoClient = new MongoClient(new ServerAddress(), singletonList(credential), options);
+		MongoClient mongoClient = new MongoClient(uri/*new ServerAddress(uri.Po), singletonList(credential), options*/);
 		db = mongoClient.getDatabase(uri.getDatabase());
 	}
 
