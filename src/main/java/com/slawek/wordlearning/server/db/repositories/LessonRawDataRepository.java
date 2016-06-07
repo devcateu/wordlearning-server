@@ -1,9 +1,6 @@
 package com.slawek.wordlearning.server.db.repositories;
 
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -18,6 +15,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 @Component
 public class LessonRawDataRepository {
@@ -39,10 +38,10 @@ public class LessonRawDataRepository {
 	private String dbs;
 
 	@PostConstruct void init() {
-		ServerAddress serverAddress = new ServerAddress();
-		MongoClientURI uri = new MongoClientURI("mongodb://heroku_nvwngddl:XXxxxx33$@ds023373.mlab.com:23373");
-		MongoClient mongoClient = new MongoClient(uri);
-		db = mongoClient.getDatabase("heroku_nvwngddl");
+		MongoClientURI uri = new MongoClientURI(System.getenv("MONGOHQ_URL"));
+		MongoCredential credential = MongoCredential.createCredential(uri.getUsername(), uri.getDatabase(), uri.getPassword());
+		MongoClient mongoClient = new MongoClient(new ServerAddress(), singletonList(credential));
+		db = mongoClient.getDatabase(uri.getDatabase());
 	}
 
 	public List<String> getAllLessonIds() {
