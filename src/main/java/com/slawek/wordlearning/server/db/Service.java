@@ -6,6 +6,7 @@ import com.slawek.wordlearning.server.db.model.Sentence;
 import com.slawek.wordlearning.server.db.model.Word;
 import com.slawek.wordlearning.server.db.repositories.LessonRawDataRepository;
 import com.slawek.wordlearning.server.db.repositories.LessonRepository;
+import com.slawek.wordlearning.server.populator.Populator;
 import com.slawek.wordlearning.server.rest.model.LessonRest;
 import com.slawek.wordlearning.server.rest.model.PictureRest;
 import com.slawek.wordlearning.server.rest.model.SentenceRest;
@@ -26,6 +27,8 @@ public class Service {
 	private LessonRawDataRepository lessonRawDataRepository;
 	@Autowired
 	private LessonRepository repository;
+	@Autowired
+	private Populator populator;
 
 	public String getLesson(String id) {
 		return lessonRawDataRepository.query(id);
@@ -45,6 +48,7 @@ public class Service {
 
 		lessonRest.getWords().forEach(wordRest -> lesson.getWords().add(mapWord(wordRest)));
 
+		populator.populateToExternalServers(lessonRest);
 		repository.save(lesson);
 	}
 	
