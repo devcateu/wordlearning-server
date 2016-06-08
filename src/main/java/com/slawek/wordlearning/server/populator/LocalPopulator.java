@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Component
 @Profile("local")
@@ -14,13 +16,26 @@ public class LocalPopulator implements Populator {
 	@Value(value = "${web.server}")
 	private String address;
 	private RestTemplate restTemplate;
+	private Timer timer;
 
 	public LocalPopulator() {
 		restTemplate = new RestTemplate();
 	}
 
-	@Override 
+	@Override
 	public void populateToExternalServers(LessonRest lessonRest) {
+		try {
+			send(lessonRest);
+		} catch (Exception e) {
+			timer.schedule(new TimerTask() {
+				@Override public void run() {
+					send(lessonRest);
+				}
+			}, 20_000);
+		}
+	}
+
+	private void send(LessonRest lessonRest) {
 		URI uri = URI.create(address);
 		restTemplate.put(uri, lessonRest);
 	}

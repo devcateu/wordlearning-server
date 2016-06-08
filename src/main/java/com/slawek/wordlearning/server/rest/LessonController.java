@@ -3,6 +3,7 @@ package com.slawek.wordlearning.server.rest;
 import com.slawek.wordlearning.server.db.Service;
 import com.slawek.wordlearning.server.rest.model.LessonRest;
 import com.slawek.wordlearning.server.rest.model.LessonsIdsRest;
+import com.slawek.wordlearning.server.rest.model.ServerState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ public class LessonController {
 	@Autowired
 	private Service service;
 
-	@RequestMapping(path = "")
-	public String state() {
-		return "RUNNING";
+	@RequestMapping(path = "", method = RequestMethod.GET)
+	public ServerState state() {
+		return ServerState.RUNNING;
 	}
 
 	@RequestMapping(path = "/lessons", method = RequestMethod.GET)
